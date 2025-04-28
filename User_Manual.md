@@ -1,6 +1,6 @@
 ## User Manual
 
-### Stages of use:
+### Stages of use
 1. Setting up the environment specified below
 2. Setting up /toolname
 3. Running the target application with /toolname
@@ -9,7 +9,7 @@
 
 ---
 
-### Necessary Environment/File Structure:
+### Necessary Environment/File Structure
 
 First ensure that the project directory includes all the below.
 
