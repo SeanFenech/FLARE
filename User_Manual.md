@@ -12,6 +12,7 @@
 ### Necessary Environment/File Structure
 
 First ensure that the project directory includes all the below.
+These are available in `Project_Template`.
 
 - `src/` The target application `.java` files, and the larva script `properties.lrv`.
 - `sealfs/`
