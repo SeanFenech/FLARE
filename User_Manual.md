@@ -12,11 +12,11 @@
 ### Necessary Environment/File Structure
 
 First ensure that the project directory includes all the below.
-These are available in `Project_Template`.
+These are available in `ProjectTemplate`.
 
 - `src/` The target application `.java` files, and the larva script `properties.lrv`.
 - `sealfs/`
-  - `module/` The user is to put their SealFS kernel module in here, which can be found here: https://gitlab.etsiit.ugr.es/esoriano/sealfs/tree/master
+  - `module/` The user is to put their SealFS kernel module in here, which can be found [here](https://gitlab.etsiit.ugr.es/esoriano/sealfs/tree/master)
   - `tools/` Ensure executable similarly.
 - `scripts/` Ensure the bash files inside are executable by root.
 - `logs/` To be mounted to SealFS. Ensure no process is accessing it when it is mounted/unmounted.
