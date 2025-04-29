@@ -1,6 +1,6 @@
 # FLARE
 
-**FLARE** is a runtime verification tool designed to generate tamper-evident, immutable audit logs for system behavior during execution. It ensures that monitored systems remain compliant with regulatory and forensic requirements by embedding logging and monitoring directly into the runtime environment.
+**FLARE** (Forensic Logs for Auditing Runtime Events) is a runtime verification tool designed to generate tamper-evident, immutable audit logs for system behavior during execution. It ensures that monitored systems remain compliant with regulatory and forensic requirements by embedding logging and monitoring directly into the runtime environment.
 
 The tool is intended for Linux environments and Java-based target applications.
 ---
