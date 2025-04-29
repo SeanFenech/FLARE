@@ -1,0 +1,13 @@
+digraph _logic_RCProperty {
+rankdir=LR;
+node [shape = circle]; goodSignal;
+node [shape = octagon]; badSignal;
+node [shape = point]; _s_s;
+_s_s -> goodSignal;
+badSignal -> badSignal [ label = "(1) goodSignalRC\\badRCStates > 0 \\badRCStates -- ; "];
+badSignal -> goodSignal [ label = "(2) goodSignalRC\\badRCStates == 0 \\d . send ( \" good \" ) ; d_rc = false ; "];
+goodSignal -> goodSignal [ label = "(1) goodSignalRC\\\\if ( badRCStates > 0 ) { badRCStates -- ; } "];
+goodSignal -> badSignal [ label = "(2) veryBadSignalRC\\\\badSignalStates += 3 ; d . send ( \" bad \" ) ; d_rc = true ; "];
+goodSignal -> goodSignal [ label = "(3) badSignalRC\\badRCStates < 5 \\badRCStates ++ ; "];
+goodSignal -> badSignal [ label = "(4) badSignalRC\\badRCStates >= 5 \\badRCStates ++ ; d . send ( \" bad \" ) ; d_rc = true ; "];
+}

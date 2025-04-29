@@ -1,0 +1,13 @@
+digraph _logic_GPSProperty {
+rankdir=LR;
+node [shape = circle]; goodSignal;
+node [shape = octagon]; badSignal;
+node [shape = point]; _s_s;
+_s_s -> goodSignal;
+badSignal -> badSignal [ label = "(1) goodSignalGPS\\badGPSStates > 0 \\badGPSStates -- ; "];
+badSignal -> goodSignal [ label = "(2) goodSignalGPS\\badGPSStates == 0 \\d_gps = false ; "];
+goodSignal -> goodSignal [ label = "(1) goodSignalGPS\\\\if ( badGPSStates > 0 ) { badGPSStates -- ; } "];
+goodSignal -> badSignal [ label = "(2) veryBadSignalGPS\\\\badGPSStates += 3 ; d_gps = true ; "];
+goodSignal -> goodSignal [ label = "(3) badSignalGPS\\badGPSStates < 5 \\badGPSStates ++ ; "];
+goodSignal -> badSignal [ label = "(4) badSignalGPS\\badGPSStates >= 5 \\badGPSStates ++ ; d_gps = true ; "];
+}

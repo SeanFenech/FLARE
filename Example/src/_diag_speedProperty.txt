@@ -1,0 +1,27 @@
+digraph _logic_speedProperty {
+rankdir=LR;
+node [shape = circle]; normalAltitude fastNormalAltitude lowAltitude;
+node [shape = octagon]; tooFastLowAltitude tooLowForSignal tooLowForSignalAndFast;
+node [shape = point]; _s_s;
+_s_s -> lowAltitude;
+normalAltitude -> normalAltitude [ label = "(1) channelD\\signalState . equals ( \" good \" ) && signal . equals ( \" bad \" ) \\signalState = \" bad \" ; "];
+normalAltitude -> normalAltitude [ label = "(2) channelD\\signalState . equals ( \" bad \" ) && signal . equals ( \" good \" ) \\signalState = \" good \" ; "];
+normalAltitude -> lowAltitude [ label = "(3) veryLowAltitude"];
+normalAltitude -> fastNormalAltitude [ label = "(4) highSpeed"];
+tooLowForSignalAndFast -> tooFastLowAltitude [ label = "(1) channelD\\signal . equals ( \" good \" ) \\signalState = \" good \" ; "];
+tooLowForSignalAndFast -> fastNormalAltitude [ label = "(2) normalAltitude"];
+tooLowForSignalAndFast -> lowAltitude [ label = "(3) lowSpeed"];
+lowAltitude -> lowAltitude [ label = "(1) channelD\\signalState . equals ( \" good \" ) && signal . equals ( \" bad \" ) \\signalState = \" bad \" ; "];
+lowAltitude -> lowAltitude [ label = "(2) channelD\\signalState . equals ( \" bad \" ) && signal . equals ( \" good \" ) \\signalState = \" good \" ; "];
+lowAltitude -> normalAltitude [ label = "(3) normalAltitude"];
+lowAltitude -> tooLowForSignalAndFast [ label = "(4) highSpeed\\signalState . equals ( \" bad \" ) "];
+lowAltitude -> tooFastLowAltitude [ label = "(5) highSpeed"];
+tooFastLowAltitude -> fastNormalAltitude [ label = "(1) normalAltitude"];
+tooFastLowAltitude -> lowAltitude [ label = "(2) lowSpeed"];
+tooFastLowAltitude -> tooLowForSignalAndFast [ label = "(3) channelD\\signal . equals ( \" bad \" ) \\signalState = \" bad \" ; "];
+fastNormalAltitude -> fastNormalAltitude [ label = "(1) channelD\\signalState . equals ( \" good \" ) && signal . equals ( \" bad \" ) \\signalState = \" bad \" ; "];
+fastNormalAltitude -> fastNormalAltitude [ label = "(2) channelD\\signalState . equals ( \" bad \" ) && signal . equals ( \" good \" ) \\signalState = \" good \" ; "];
+fastNormalAltitude -> normalAltitude [ label = "(3) lowSpeed"];
+fastNormalAltitude -> tooLowForSignalAndFast [ label = "(4) veryLowAltitude\\signalState . equals ( \" bad \" ) "];
+fastNormalAltitude -> tooFastLowAltitude [ label = "(5) veryLowAltitude"];
+}

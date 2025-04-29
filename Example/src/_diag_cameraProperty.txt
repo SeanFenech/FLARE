@@ -1,0 +1,19 @@
+digraph _logic_cameraProperty {
+rankdir=LR;
+node [shape = circle]; accelerating accelerating5s lowAcceleration;
+node [shape = octagon]; accelerating5sAndLookingAway;
+node [shape = point]; _s_s;
+_s_s -> lowAcceleration;
+accelerating5s -> lowAcceleration [ label = "(1) lowAcceleration"];
+accelerating5s -> accelerating5sAndLookingAway [ label = "(2) lookingAway\\\\look = false ; "];
+accelerating5sAndLookingAway -> accelerating5s [ label = "(1) looking\\\\look = true ; "];
+accelerating5sAndLookingAway -> lowAcceleration [ label = "(2) lowAcceleration"];
+lowAcceleration -> accelerating [ label = "(1) highAcceleration\\\\c1 . reset ( ) ; "];
+lowAcceleration -> lowAcceleration [ label = "(2) looking\\! look \\look = true ; "];
+lowAcceleration -> lowAcceleration [ label = "(3) lookingAway\\look \\look = false ; "];
+accelerating -> lowAcceleration [ label = "(1) lowAcceleration\\\\c1 . off ( ) ; "];
+accelerating -> accelerating5s [ label = "(2) highAccelerationFor5s\\look "];
+accelerating -> accelerating5sAndLookingAway [ label = "(3) highAccelerationFor5s\\! look "];
+accelerating -> accelerating [ label = "(4) looking\\! look \\look = true ; "];
+accelerating -> accelerating [ label = "(5) lookingAway\\look \\look = false ; "];
+}

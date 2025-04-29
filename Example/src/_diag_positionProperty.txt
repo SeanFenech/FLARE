@@ -1,0 +1,27 @@
+digraph _logic_positionProperty {
+rankdir=LR;
+node [shape = circle]; inRange;
+node [shape = octagon]; tooFar inRestricted tooFarAndRestricted outOfAllBounds;
+node [shape = point]; _s_s;
+_s_s -> inRange;
+inRestricted -> inRange [ label = "(1) outRestricted\\\\d_location = false ; "];
+inRestricted -> inRestricted [ label = "(2) highAltitude\\! tooHigh \\tooHigh = true ; "];
+inRestricted -> inRestricted [ label = "(3) lowAltitude\\tooHigh \\tooHigh = false ; "];
+inRestricted -> tooFarAndRestricted [ label = "(4) outDistance\\! tooHigh "];
+inRestricted -> outOfAllBounds [ label = "(5) outDistance\\tooHigh "];
+tooFar -> inRange [ label = "(1) inDistance\\\\d_location = false ; "];
+tooFar -> tooFar [ label = "(2) highAltitude\\! tooHigh \\tooHigh = true ; "];
+tooFar -> tooFar [ label = "(3) lowAltitude\\tooHigh \\tooHigh = false ; "];
+tooFar -> tooFarAndRestricted [ label = "(4) intoRestricted\\! tooHigh "];
+tooFar -> outOfAllBounds [ label = "(5) intoRestricted\\tooHigh "];
+outOfAllBounds -> tooFarAndRestricted [ label = "(1) lowAltitude\\\\tooHigh = false ; "];
+outOfAllBounds -> inRestricted [ label = "(2) inDistance"];
+outOfAllBounds -> tooFar [ label = "(3) outRestricted"];
+tooFarAndRestricted -> tooFar [ label = "(1) outRestricted"];
+tooFarAndRestricted -> inRestricted [ label = "(2) inDistance"];
+tooFarAndRestricted -> outOfAllBounds [ label = "(3) highAltitude\\\\tooHigh = true ; "];
+inRange -> inRange [ label = "(1) highAltitude\\! tooHigh \\tooHigh = true ; "];
+inRange -> inRange [ label = "(2) lowAltitude\\tooHigh \\tooHigh = false ; "];
+inRange -> tooFar [ label = "(3) outDistance\\\\d_location = true ; "];
+inRange -> inRestricted [ label = "(4) intoRestricted\\\\d_location = true ; "];
+}

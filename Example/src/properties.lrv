@@ -1,0 +1,421 @@
+IMPORTS {
+	import java.lang.Math;
+	import java.time.LocalTime;
+}
+GLOBAL {
+	VARIABLES {
+		int badRCStates = 0;
+		int badGPSStates = 0;
+		int badSignalStates = 0;
+		int badCellStates = 0;
+		boolean look = true;
+		boolean tooHigh = false;
+
+		Channel d = new Channel();
+		Clock c1 = new Clock();
+		Clock c2 = new Clock();
+		Clock dc10 = new Clock();
+		Clock dc = new Clock();
+
+		int abruptChanges = 0;
+		double lSpeed = 0;
+		double lSpeedX = 0;
+	        double lSpeedY = 0;
+        	double lSpeedZ = 0;
+
+                String signalState = "good";
+
+
+		double l_distance = 0; %%Last updated distance
+		double l_latitude = 0;
+		double l_longitude = 0;
+		double l_altitude = 0;
+		double l_batteryPercentage = 0;
+		double l_batteryTemperature = 0;
+		double l_rcElevator = 0;
+		double l_rcAileron = 0;
+		double l_rcThrottle = 0;
+		double l_rcRudder = 0;
+		double l_satellites = 0;
+		double l_gpsLevel = 0;
+		LocalTime n = LocalTime.now();
+		LocalTime lt_distance = n; %%Last update time for distance
+		LocalTime lt_latitude = n;
+		LocalTime lt_longitude = n;
+		LocalTime lt_altitude = n;
+		LocalTime lt_batteryPercentage = n;
+		LocalTime lt_batteryTemperature = n;
+		LocalTime lt_rcElevator = n;
+		LocalTime lt_rcAileron = n;
+		LocalTime lt_rcThrottle = n;
+		LocalTime lt_rcRudder = n;
+		LocalTime lt_satellites = n;
+		LocalTime lt_gpsLevel = n;
+
+		boolean d_location = false;
+		boolean d_rc = false;
+		boolean d_gps = false;
+		boolean d_battery = false;
+		boolean d_goodCellConsistency = true;
+	}
+	EVENTS {
+		dataLocation(double distance, double latitude, double longitude, LocalTime time) = {*.updateLocation(distance, longitude, latitude, time)}
+		dataAltitude(double altitude, LocalTime time) = {*.updateAltitude(altitude, *, *, time)}
+		dataBattery(double batteryPercentage, double batteryTemperature, LocalTime time) = {*.updateBattery(batteryPercentage, batteryTemperature, *, *, *, *, *, *, *, *, time)}
+		dataRC(double rcElevator, double rcAileron, double rcThrottle, double rcRudder, LocalTime time) = {*.updateRC(rcElevator, rcAileron, rcThrottle, rcRudder, *, *, *, *, time)}
+		dataGPS(double satellites, double gpsLevel, LocalTime time) = {*.updateGPS(satellites, gpsLevel, time)}
+
+		takeOff(String flycState) = {*.updateFlightControl(*, flycState)}
+		filter {flycState.equals("Motors_Started")}
+		landing(String flycState) = {*.updateFlightControl(*, flycState)}
+		filter {flycState.equals("Confirm_Landing")}
+
+		intoRestricted (double latitude, double longitude) = {*.updateLocation(*, latitude, longitude, *)}
+		filter {((35.831 < latitude) && (latitude < 35.865)) && ((14.456 < longitude) && (longitude < 14.511))}
+		outRestricted (double latitude, double longitude) = {*.updateLocation(*, latitude, longitude, *)}
+		filter {((35.831 >= latitude) || (latitude >= 35.865)) || ((14.456 >= longitude) || (longitude >= 14.511))}
+
+		outDistance(double distance) = {*.updateLocation(distance, *, *, *)}
+		filter {distance > 115}
+		inDistance(double distance) = {*.updateLocation(distance, *, *, *)}
+		filter {distance <= 115}
+
+		highAltitude(double altSea, double altTakeoff) = {*.updateAltitude(altTakeoff, altSea, *, *)}
+		filter {altTakeoff > 60}
+		lowAltitude(double altSea, double altTakeoff) = {*.updateAltitude(altTakeoff, altSea, *, *)}
+		filter {altTakeoff <= 60}
+		normalAltitude(double altSea, double altTakeoff) = {*.updateAltitude(altTakeoff, altSea, *, *)}
+		filter {altTakeoff >= 10}
+		veryLowAltitude(double altSea, double altTakeoff) = {*.updateAltitude(altTakeoff, altSea, *, *)}
+		filter {altTakeoff < 10}
+
+		%%newGroundHeight(double groundHeightDrone, double groundHeight) = {*.updateGroundHeight(groundHeightDrone, groundHeight)}
+
+		lowCharge(double batteryPercentage) = {*.updateBattery(batteryPercentage, *, *, *, *, *, *, *, *, *, *)}
+		filter {batteryPercentage < 20}
+		highTemperature(double batteryTemperature) = {*.updateBattery(*, batteryTemperature, *, *, *, *, *, *, *, *, *)}
+		filter {batteryTemperature > 140}
+		lowTemperature(double batteryTemperature) = {*.updateBattery(*, batteryTemperature, *, *, *, *, *, *, *, *, *)}
+		filter {batteryTemperature <= 140}
+
+		goodCellConsistency(double voltage, double voltageCell1, double voltageCell2) = {*.updateBattery(*, *, *, voltage, voltageCell1, voltageCell2, *, *, *, *, *)}
+		filter { (voltage - voltageCell1) <= 0.01 && (voltage - voltageCell2)<= 0.01}
+		badCellConsistency(double voltage, double voltageCell1, double voltageCell2) = {*.updateBattery(*, *, *, voltage, voltageCell1, voltageCell2, *, *, *, *, *)}
+		filter { (voltage - voltageCell1) > 0.01 && (voltage - voltageCell2) > 0.01}
+		veryBadCellConsistency(double voltage, double voltageCell1, double voltageCell2) = {*.updateBattery(*, *, *, voltage, voltageCell1, voltageCell2, *, *, *, *, *)}
+		filter { (voltage - voltageCell1) > 0.1 && (voltage - voltageCell2) > 0.1}
+
+		goodSignalRC(double rcElevator, double rcAileron, double rcThrottle, double rcRudder) = {*.updateRC(rcElevator, rcAileron, rcThrottle, rcRudder, *, *, *, *, *)}
+		filter {rcElevator >= 364 && rcAileron >= 364 && rcThrottle >= 364 && rcRudder >= 364}
+		badSignalRC(double rcElevator, double rcAileron, double rcThrottle, double rcRudder) = {*.updateRC(rcElevator, rcAileron, rcThrottle, rcRudder, *, *, *, *, *)}
+		filter {(50 <= rcElevator && rcElevator < 364) || (50 <= rcAileron && rcAileron < 364) || (50 <= rcThrottle && rcThrottle < 364) || (50 <= rcRudder && rcRudder < 364)}
+		veryBadSignalRC(double rcElevator, double rcAileron, double rcThrottle, double rcRudder) = {*.updateRC(rcElevator, rcAileron, rcThrottle, rcRudder, *, *, *, *, *)}
+		filter {rcElevator < 50 || rcAileron < 50 || rcThrottle < 50 || rcRudder < 50}
+
+		channelD(String signal) = {d.receive(signal)}
+
+		highSpeed(double speed) = {*.updateSpeed(speed, *, *, *)}
+		filter {speed > 42.5}
+		lowSpeed(double speed) = {*.updateSpeed(speed, *, *, *)}
+		filter {speed <= 42.5}
+
+		goodSignalGPS(double satellites, double gpsLevel) = {*.updateGPS(satellites, gpsLevel, *)}
+		filter {gpsLevel > 3 && satellites > 11}
+		badSignalGPS(double satellites, double gpsLevel) = {*.updateGPS(satellites, gpsLevel, *)}
+		filter {gpsLevel == 3 || satellites <= 11}
+		veryBadSignalGPS(double satellites, double gpsLevel) = {*.updateGPS(satellites, gpsLevel, *)}
+		filter {gpsLevel < 3 || satellites < 9}
+
+		highAcceleration(double pitch, double roll) = {*.updateOrientation(*, pitch, roll, *, *, *)}
+		filter {Math.acos(Math.cos(pitch) * Math.cos(roll)) > 15}
+		%%filter {Math.atan(Math.sqrt( (Math.tan(pitch) * Math.tan(pitch)) + (Math.tan(roll) * Math.tan(roll)) )) > 15}
+		lowAcceleration(double pitch, double roll) = {*.updateOrientation(*, pitch, roll, *, *, *)}
+		filter {Math.acos(Math.cos(pitch) * Math.cos(roll)) <= 15}
+		%%filter {Math.atan(Math.sqrt( (Math.tan(pitch) * Math.tan(pitch)) + (Math.tan(roll) * Math.tan(roll)) )) <= 15}
+
+		highAccelerationFor5s() = {c1@5}
+
+		lookingAway(double droneHeading, double dronePitch, double droneRoll, double gimbalHeading, double gimbalPitch, double gimbalRoll) = {*.updateOrientation(droneHeading, dronePitch, droneRoll, gimbalHeading, gimbalPitch, gimbalRoll)}
+		filter {Math.abs(gimbalHeading - (Math.acos(Math.cos(dronePitch) * Math.cos(droneRoll)))) >= 5 || Math.abs(gimbalPitch) >= 5}
+		%%filter {(Math.abs(gimbalHeading - (droneHeading - Math.atan(Math.sin(droneRoll) / Math.tan(dronePitch)) ) ) >= 5 || Math.abs(gimbalPitch - dronePitch) >= 5 || Math.abs(gimbalRoll - droneRoll) >= 5)}
+		looking(double droneHeading, double dronePitch, double droneRoll, double gimbalHeading, double gimbalPitch, double gimbalRoll) = {*.updateOrientation(droneHeading, dronePitch, droneRoll, gimbalHeading, gimbalPitch, gimbalRoll)}
+		filter {Math.abs(gimbalHeading - (Math.acos(Math.cos(dronePitch) * Math.cos(droneRoll)))) < 5 && Math.abs(gimbalPitch) < 5}
+		%%filter {(Math.abs(gimbalHeading - (droneHeading - Math.atan(Math.sin(droneRoll) / Math.tan(dronePitch)) ) ) < 5 && Math.abs(gimbalPitch - dronePitch) < 5 && Math.abs(gimbalRoll - droneRoll) < 5)}
+		%% Assuming order: Yaw Pitch Roll, and that gimbal information is relative to drone
+		%% Assuming roll is anticlockwise if facing forward from center
+		%% Assuming pitch is clockwise if facing right from center
+
+		speedChange(double xSpeed, double ySpeed, double zSpeed) = {*.updateSpeed(*, xSpeed, ySpeed, zSpeed)}
+                windTimerElapsed() = {c2@30}
+
+		dataClock10() = {dc10@10}
+		dataClock1() = {dc@1}
+	}
+	PROPERTY dataProperty {
+		STATES {
+			STARTING {
+				normal
+			}
+		}
+		TRANSITIONS {
+			normal -> normal [dataClock10\\logData(true, true, true, true); dc10.reset();]
+			normal -> normal [dataClock1\\logData(d_location, d_rc, d_gps, d_battery); dc.reset();]
+
+			normal -> normal [dataLocation\\l_distance = distance; lt_distance = time; l_latitude = latitude; lt_latitude = time; l_longitude = longitude; lt_longitude = time;]
+			normal -> normal [dataAltitude\\l_altitude = altitude; lt_altitude = time;]
+			normal -> normal [dataBattery\\l_batteryPercentage = batteryPercentage; lt_batteryPercentage = time; l_batteryTemperature = batteryTemperature; lt_batteryTemperature = time;]
+			normal -> normal [dataRC\\l_rcElevator = rcElevator; lt_rcElevator = time; l_rcAileron = rcAileron; lt_rcAileron = time; l_rcThrottle = rcThrottle; lt_rcThrottle = time; l_rcRudder = rcRudder; lt_rcRudder = time;]
+			normal -> normal [dataGPS\\l_satellites = satellites; lt_satellites = time; l_gpsLevel = gpsLevel; lt_gpsLevel = time;]
+
+			normal -> normal [takeOff\\System.out.println("---------Takeoff---------"); logData(true, false, false, false); System.out.println("Good battery cell consistency: " + d_goodCellConsistency );]
+			normal -> normal [landing\\System.out.println("---------Landing---------"); logData(true, false, false, false);]
+
+			normal -> normal [goodCellConsistency\\d_goodCellConsistency = true;]
+			normal -> normal [badCellConsistency\\d_goodCellConsistency = false;]
+			normal -> normal [veryBadCellConsistency\\d_goodCellConsistency = false;]
+		}
+	}
+	PROPERTY cameraProperty {
+		STATES {
+			BAD {
+				accelerating5sAndLookingAway
+			}
+			NORMAL {
+				accelerating
+				accelerating5s
+			}
+			STARTING {
+				lowAcceleration {c1.off();}
+			}
+		}
+		TRANSITIONS {
+			lowAcceleration -> accelerating			[highAcceleration\\c1.reset();] %%Should start clock if off and reset if on
+			lowAcceleration -> lowAcceleration		[looking\!look\ look = true;]
+			lowAcceleration -> lowAcceleration		[lookingAway\look\ look = false;]
+
+			accelerating -> lowAcceleration 		[lowAcceleration\\c1.off();]
+			accelerating -> accelerating5s			[highAccelerationFor5s\look\]
+			accelerating -> accelerating5sAndLookingAway	[highAccelerationFor5s\!look\]
+			accelerating -> accelerating			[looking\!look\ look = true;]
+			accelerating -> accelerating			[lookingAway\look\ look = false;]
+
+			accelerating5s -> lowAcceleration 		[lowAcceleration\\]
+			accelerating5s -> accelerating5sAndLookingAway	[lookingAway\\ look = false;]
+
+			accelerating5sAndLookingAway -> accelerating5s	[looking\\look = true;]
+			accelerating5sAndLookingAway -> lowAcceleration [lowAcceleration\\]
+		}
+	}
+	PROPERTY positionProperty {
+		STATES {
+			BAD {
+				tooFar
+				inRestricted
+				tooFarAndRestricted
+				outOfAllBounds
+			}
+			STARTING {
+				inRange
+			}
+		}
+		TRANSITIONS {
+			inRange -> inRange			[highAltitude\!tooHigh\tooHigh = true;]
+			inRange -> inRange			[lowAltitude\tooHigh\tooHigh = false;]
+			inRange -> tooFar			[outDistance\\ d_location = true;]
+			inRange -> inRestricted			[intoRestricted\\ d_location = true;]
+
+			tooFar -> inRange			[inDistance\\ d_location = false;]
+			tooFar -> tooFar			[highAltitude\!tooHigh\tooHigh = true;]
+			tooFar -> tooFar			[lowAltitude\tooHigh\tooHigh = false;]
+			tooFar -> tooFarAndRestricted		[intoRestricted\!tooHigh\] 
+			tooFar -> outOfAllBounds		[intoRestricted\tooHigh\] 
+
+			inRestricted -> inRange			[outRestricted\\ d_location = false;] 
+			inRestricted -> inRestricted		[highAltitude\!tooHigh\tooHigh = true;]
+			inRestricted -> inRestricted		[lowAltitude\tooHigh\tooHigh = false;]
+			inRestricted -> tooFarAndRestricted	[outDistance\!tooHigh\]
+			inRestricted -> outOfAllBounds 		[outDistance\tooHigh\]
+
+			tooFarAndRestricted -> tooFar		[outRestricted\\] 
+			tooFarAndRestricted -> inRestricted	[inDistance\\]
+			tooFarAndRestricted -> outOfAllBounds	[highAltitude\\tooHigh = true;]
+
+			outOfAllBounds -> tooFarAndRestricted	[lowAltitude\\tooHigh = false;]
+			outOfAllBounds -> inRestricted		[inDistance\\]
+			outOfAllBounds -> tooFar 		[outRestricted\\]
+		}
+	}
+	PROPERTY RCProperty {
+		STATES {
+			BAD {
+				badSignal
+			}
+			STARTING {
+				goodSignal
+			}
+		}
+		TRANSITIONS {
+			goodSignal -> goodSignal		[goodSignalRC\\ if (badRCStates > 0) {badRCStates--;}]
+			goodSignal -> badSignal			[veryBadSignalRC\\ badSignalStates+=3; d.send("bad"); d_rc = true;]
+			goodSignal -> goodSignal		[badSignalRC\ badRCStates < 5 \ badRCStates++;]
+			goodSignal -> badSignal			[badSignalRC\ badRCStates >= 5 \ badRCStates++; d.send("bad"); d_rc = true;]
+			badSignal -> badSignal			[goodSignalRC\ badRCStates > 0 \ badRCStates--;]
+			badSignal -> goodSignal			[goodSignalRC\ badRCStates == 0\ d.send("good"); d_rc = false;]
+		}
+	}
+	PROPERTY GPSProperty {
+		STATES {
+			BAD {
+				badSignal
+			}
+			STARTING {
+				goodSignal
+			}
+		}
+		TRANSITIONS {
+			goodSignal -> goodSignal		[goodSignalGPS\\ if (badGPSStates > 0) {badGPSStates--;}]
+			goodSignal -> badSignal			[veryBadSignalGPS\\ badGPSStates+=3; d_gps = true;]
+			goodSignal -> goodSignal		[badSignalGPS\ badGPSStates < 5 \ badGPSStates++;]
+			goodSignal -> badSignal			[badSignalGPS\ badGPSStates >= 5 \ badGPSStates++; d_gps = true;]
+			badSignal -> badSignal			[goodSignalGPS\ badGPSStates > 0 \ badGPSStates--;]
+			badSignal -> goodSignal			[goodSignalGPS\ badGPSStates == 0\ d_gps = false;]
+		}
+	}
+	PROPERTY batteryProperty {
+		STATES {
+			BAD {
+				lowCharge
+				lowBatteryHealth
+			}
+			STARTING {
+				goodBattery
+			}
+		}
+		TRANSITIONS {
+			goodBattery -> lowCharge		[lowCharge\\d_battery = true;]
+			lowBatteryHealth -> lowCharge		[lowCharge\\]
+			goodBattery -> lowBatteryHealth		[highTemperature\\badCellStates +=5; d_battery = true;]
+			goodBattery -> goodBattery		[goodCellConsistency\\ if (badCellStates > 0) {badCellStates--;}]
+			goodBattery -> goodBattery		[badCellConsistency\ badCellStates < 5 \ badCellStates++;]
+			goodBattery -> lowBatteryHealth		[badCellConsistency\ badCellStates >= 5 \ badCellStates++; d_battery = true;]
+			lowBatteryHealth -> lowBatteryHealth	[highTemperature\\]
+			lowBatteryHealth -> lowBatteryHealth	[goodCellConsistency\ badCellStates > 0 \ badCellStates--;]
+			lowBatteryHealth -> goodBattery		[goodCellConsistency\ badCellStates == 0\ d_battery = false;]
+		}
+	}
+	PROPERTY speedProperty {
+		STATES {
+			BAD {
+				tooFastLowAltitude
+				tooLowForSignal
+				tooLowForSignalAndFast
+			}
+			NORMAL {
+				normalAltitude
+				fastNormalAltitude
+			}
+			STARTING {
+				lowAltitude
+			}
+		}
+		TRANSITIONS {
+
+			normalAltitude -> normalAltitude		[channelD\signalState.equals("good") && signal.equals("bad")\ signalState = "bad";]
+			normalAltitude -> normalAltitude		[channelD\signalState.equals("bad") && signal.equals("good")\ signalState = "good";]
+			normalAltitude -> lowAltitude			[veryLowAltitude\\]
+			normalAltitude -> fastNormalAltitude		[highSpeed\\]
+
+			lowAltitude -> lowAltitude			[channelD\signalState.equals("good") && signal.equals("bad")\ signalState = "bad";]
+			lowAltitude -> lowAltitude			[channelD\signalState.equals("bad") && signal.equals("good")\ signalState = "good";]
+			lowAltitude -> normalAltitude			[normalAltitude\\]
+			lowAltitude -> tooLowForSignalAndFast		[highSpeed\signalState.equals("bad")\]
+			lowAltitude -> tooFastLowAltitude		[highSpeed\\]
+
+			fastNormalAltitude -> fastNormalAltitude	[channelD\signalState.equals("good") && signal.equals("bad")\ signalState = "bad";]
+			fastNormalAltitude -> fastNormalAltitude	[channelD\signalState.equals("bad") && signal.equals("good")\ signalState = "good";]
+			fastNormalAltitude -> normalAltitude		[lowSpeed\\]
+			fastNormalAltitude -> tooLowForSignalAndFast	[veryLowAltitude\signalState.equals("bad")\]
+			fastNormalAltitude -> tooFastLowAltitude	[veryLowAltitude\\]
+
+			tooFastLowAltitude -> fastNormalAltitude	[normalAltitude\\]
+			tooFastLowAltitude -> lowAltitude		[lowSpeed\\]
+			tooFastLowAltitude -> tooLowForSignalAndFast	[channelD\signal.equals("bad")\ signalState = "bad";]
+
+			tooLowForSignalAndFast -> tooFastLowAltitude	[channelD\signal.equals("good")\ signalState = "good";]
+			tooLowForSignalAndFast -> fastNormalAltitude	[normalAltitude\\]
+			tooLowForSignalAndFast -> lowAltitude		[lowSpeed\\]
+		}
+	}
+	PROPERTY windspeedProperty {
+		STATES {
+			BAD {
+				likelyHighWindspeed
+			}
+			STARTING {
+				normal {c2.off();}
+			}
+		}
+		TRANSITIONS {
+			normal -> normal		[speedChange\ !checkChange(xSpeed, ySpeed, zSpeed, lSpeedX, lSpeedY, lSpeedZ)\ lSpeedX = xSpeed; lSpeedY = ySpeed; lSpeedZ = zSpeed;]
+			normal -> likelyHighWindspeed	[speedChange\ abruptChanges >= 5 \ lSpeedX = xSpeed; lSpeedY = ySpeed; lSpeedZ = zSpeed; abruptChanges++; c2.reset();]
+			normal -> normal		[speedChange\\lSpeedX = xSpeed; lSpeedY = ySpeed; lSpeedZ = zSpeed; abruptChanges++; c2.reset();]
+			normal -> normal		[windTimerElapsed\abruptChanges > 0\abruptChanges--; c2.reset();]
+			normal -> normal		[windTimerElapsed\\c2.off();]
+			likelyHighWindspeed -> likelyHighWindspeed	[speedChange\ !checkChange(xSpeed, ySpeed, zSpeed, lSpeedX, lSpeedY, lSpeedZ) \ lSpeedX = xSpeed; lSpeedY = ySpeed; lSpeedZ = zSpeed;]
+			likelyHighWindspeed -> likelyHighWindspeed	[speedChange\ abruptChanges < 10\ lSpeedX = xSpeed; lSpeedY = ySpeed; lSpeedZ = zSpeed; abruptChanges++; c2.reset();]
+			likelyHighWindspeed -> normal			[windTimerElapsed\abruptChanges <= 5\abruptChanges--; c2.reset();]
+			likelyHighWindspeed -> likelyHighWindspeed	[windTimerElapsed\\abruptChanges--; c2.reset();]
+		}
+	}
+}
+METHODS {
+	boolean checkChange(double xSpeed, double ySpeed, double zSpeed, double lSpeedX, double lSpeedY, double lSpeedZ) {
+		double dotP = (lSpeedX*xSpeed + lSpeedY*ySpeed + lSpeedZ*zSpeed);
+		double mag = Math.sqrt(xSpeed*xSpeed + ySpeed*ySpeed + zSpeed*zSpeed);
+		double lmag = Math.sqrt(lSpeedX*lSpeedX + lSpeedY*lSpeedY + lSpeedZ*lSpeedZ);
+		if(lmag == 0 || mag == 0) {
+			return false;
+		}
+		double sim = dotP / (lmag * mag);	%% Cosine similarity
+
+                double magR = mag / lmag;
+                boolean magC = magR < 0.5 || magR > (1/0.5);
+
+		return (sim <= -0.5) || magC;
+	}
+	void logData(boolean location, boolean rc, boolean gps, boolean battery){
+		if (location) {
+			boolean a = queue.offer(lt_distance + " | Distance: " + l_distance);
+			boolean b = queue.offer(lt_latitude + " | Latitude: " + l_latitude);
+			boolean c = queue.offer(lt_longitude + " | Longitude: " + l_longitude);
+			boolean d = queue.offer(lt_altitude + " | Altitude: " + l_altitude);
+			if(!(a && b && c && d)) {
+				System.out.println("SealFS Writing busy, log missed: Periodic Location Log");
+			}
+		}
+		if (rc){
+			boolean a = queue.offer(lt_rcElevator + " | rcElevator: " + l_rcElevator);
+			boolean b = queue.offer(lt_rcAileron + " | rcAileron: " + l_rcAileron);
+			boolean c = queue.offer(lt_rcThrottle + " | rcThrottle: " + l_rcThrottle);
+			boolean d = queue.offer(lt_rcRudder + " | rcRudder: " + l_rcRudder);
+			if(!(a && b && c && d)) {
+				System.out.println("SealFS Writing busy, log missed: Periodic Location Log");
+			}
+		}
+		if (gps){
+			boolean a = queue.offer(lt_satellites + " | Satellite Connections: " + l_satellites);
+			boolean b = queue.offer(lt_gpsLevel + " | GPS-Level: " + l_gpsLevel);
+			if(!(a && b)) {
+				System.out.println("SealFS Writing busy, log missed: Periodic Location Log");
+			}
+
+		}
+		if (battery) {
+			boolean a = queue.offer(lt_batteryPercentage + " | Battery Percentage: " + l_batteryPercentage);
+			boolean b = queue.offer(lt_batteryTemperature + " | Battery Temperature: " + l_batteryTemperature);
+			if(!(a && b)) {
+				System.out.println("SealFS Writing busy, log missed: Periodic Location Log");
+			}
+		}
+	}
+}

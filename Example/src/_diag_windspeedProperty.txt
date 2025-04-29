@@ -1,0 +1,16 @@
+digraph _logic_windspeedProperty {
+rankdir=LR;
+node [shape = circle]; normal;
+node [shape = octagon]; likelyHighWindspeed;
+node [shape = point]; _s_s;
+_s_s -> normal;
+normal -> normal [ label = "(1) speedChange\\! checkChange ( xSpeed , ySpeed , zSpeed , lSpeedX , lSpeedY , lSpeedZ ) \\lSpeedX = xSpeed ; lSpeedY = ySpeed ; lSpeedZ = zSpeed ; "];
+normal -> likelyHighWindspeed [ label = "(2) speedChange\\abruptChanges >= 5 \\lSpeedX = xSpeed ; lSpeedY = ySpeed ; lSpeedZ = zSpeed ; abruptChanges ++ ; c2 . reset ( ) ; "];
+normal -> normal [ label = "(3) speedChange\\\\lSpeedX = xSpeed ; lSpeedY = ySpeed ; lSpeedZ = zSpeed ; abruptChanges ++ ; c2 . reset ( ) ; "];
+normal -> normal [ label = "(4) windTimerElapsed\\abruptChanges > 0 \\abruptChanges -- ; c2 . reset ( ) ; "];
+normal -> normal [ label = "(5) windTimerElapsed\\\\c2 . off ( ) ; "];
+likelyHighWindspeed -> likelyHighWindspeed [ label = "(1) speedChange\\! checkChange ( xSpeed , ySpeed , zSpeed , lSpeedX , lSpeedY , lSpeedZ ) \\lSpeedX = xSpeed ; lSpeedY = ySpeed ; lSpeedZ = zSpeed ; "];
+likelyHighWindspeed -> likelyHighWindspeed [ label = "(2) speedChange\\abruptChanges < 10 \\lSpeedX = xSpeed ; lSpeedY = ySpeed ; lSpeedZ = zSpeed ; abruptChanges ++ ; c2 . reset ( ) ; "];
+likelyHighWindspeed -> normal [ label = "(3) windTimerElapsed\\abruptChanges <= 5 \\abruptChanges -- ; c2 . reset ( ) ; "];
+likelyHighWindspeed -> likelyHighWindspeed [ label = "(4) windTimerElapsed\\\\abruptChanges -- ; c2 . reset ( ) ; "];
+}

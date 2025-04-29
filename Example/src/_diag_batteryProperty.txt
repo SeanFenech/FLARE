@@ -1,0 +1,16 @@
+digraph _logic_batteryProperty {
+rankdir=LR;
+node [shape = circle]; goodBattery;
+node [shape = octagon]; lowCharge lowBatteryHealth;
+node [shape = point]; _s_s;
+_s_s -> goodBattery;
+lowBatteryHealth -> lowCharge [ label = "(1) lowCharge"];
+lowBatteryHealth -> lowBatteryHealth [ label = "(2) highTemperature"];
+lowBatteryHealth -> lowBatteryHealth [ label = "(3) goodCellConsistency\\badCellStates > 0 \\badCellStates -- ; "];
+lowBatteryHealth -> goodBattery [ label = "(4) goodCellConsistency\\badCellStates == 0 \\d_battery = false ; "];
+goodBattery -> lowCharge [ label = "(1) lowCharge\\\\d_battery = true ; "];
+goodBattery -> lowBatteryHealth [ label = "(2) highTemperature\\\\badCellStates += 5 ; d_battery = true ; "];
+goodBattery -> goodBattery [ label = "(3) goodCellConsistency\\\\if ( badCellStates > 0 ) { badCellStates -- ; } "];
+goodBattery -> goodBattery [ label = "(4) badCellConsistency\\badCellStates < 5 \\badCellStates ++ ; "];
+goodBattery -> lowBatteryHealth [ label = "(5) badCellConsistency\\badCellStates >= 5 \\badCellStates ++ ; d_battery = true ; "];
+}

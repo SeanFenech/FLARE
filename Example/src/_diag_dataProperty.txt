@@ -1,0 +1,18 @@
+digraph _logic_dataProperty {
+rankdir=LR;
+node [shape = circle]; normal;
+node [shape = point]; _s_s;
+_s_s -> normal;
+normal -> normal [ label = "(1) dataClock10\\\\logData ( true , true , true , true ) ; dc10 . reset ( ) ; "];
+normal -> normal [ label = "(2) dataClock1\\\\logData ( d_location , d_rc , d_gps , d_battery ) ; dc . reset ( ) ; "];
+normal -> normal [ label = "(3) dataLocation\\\\l_distance = distance ; lt_distance = time ; l_latitude = latitude ; lt_latitude = time ; l_longitude = longitude ; lt_longitude = time ; "];
+normal -> normal [ label = "(4) dataAltitude\\\\l_altitude = altitude ; lt_altitude = time ; "];
+normal -> normal [ label = "(5) dataBattery\\\\l_batteryPercentage = batteryPercentage ; lt_batteryPercentage = time ; l_batteryTemperature = batteryTemperature ; lt_batteryTemperature = time ; "];
+normal -> normal [ label = "(6) dataRC\\\\l_rcElevator = rcElevator ; lt_rcElevator = time ; l_rcAileron = rcAileron ; lt_rcAileron = time ; l_rcThrottle = rcThrottle ; lt_rcThrottle = time ; l_rcRudder = rcRudder ; lt_rcRudder = time ; "];
+normal -> normal [ label = "(7) dataGPS\\\\l_satellites = satellites ; lt_satellites = time ; l_gpsLevel = gpsLevel ; lt_gpsLevel = time ; "];
+normal -> normal [ label = "(8) takeOff\\\\System . out . println ( \" ---------Takeoff--------- \" ) ; logData ( true , false , false , false ) ; System . out . println ( \" Good battery cell consistency:  \" + d_goodCellConsistency ) ; "];
+normal -> normal [ label = "(9) landing\\\\System . out . println ( \" ---------Landing--------- \" ) ; logData ( true , false , false , false ) ; "];
+normal -> normal [ label = "(10) goodCellConsistency\\\\d_goodCellConsistency = true ; "];
+normal -> normal [ label = "(11) badCellConsistency\\\\d_goodCellConsistency = false ; "];
+normal -> normal [ label = "(12) veryBadCellConsistency\\\\d_goodCellConsistency = false ; "];
+}
