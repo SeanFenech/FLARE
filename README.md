@@ -57,3 +57,7 @@
 FLARE is research-grade software developed to bridge formal methods and regulatory needs in secure software systems. It has been tested on UAVs and is adaptable to a broad range of real-time, safety-critical, and high-assurance platforms.
 
 See [`UserManual.md`](./UserManual.md) for setup and integration instructions.
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
