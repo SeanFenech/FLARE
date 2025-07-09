@@ -46,7 +46,7 @@ The tool is intended for Linux environments and Java-based target applications.
 
 - **Autonomous UAVs**  
   Enforces compliance with airspace, safety, and signal integrity rules, and produces logs for post-flight review and certification.
-  A simulated drone example is available in [`Example`](./Example/).
+  A simulated drone example is available in [`Example`](./Example/). Note that this is using a version which does not include the encryption option.
   
 - **AI Systems in Regulated Sectors**  
   Could tracks model inputs/outputs and ensure that runtime behavior aligns with predefined risk control properties.
