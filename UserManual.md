@@ -83,5 +83,5 @@ If encrypted logs are required, include `-e` and the file containing the key. No
 Use the decryption algorithm provided [here](./src/decrypter)
 
    ```bash
-   java Main <key> <file_to_decrypt>
+   java Main key file_to_decrypt
    ```
