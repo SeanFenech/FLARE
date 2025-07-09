@@ -20,7 +20,8 @@ These are available in `ProjectTemplate`.
   - `tools/` Ensure executable similarly.
 - `scripts/` Ensure the bash files inside are executable by root.
 - `logs/` To be mounted to SealFS. Ensure no process is accessing it when it is mounted/unmounted.
-- `compiler`
+- `compiler/`
+- `encryption_key` To be used as the encryption key if this option was selected.
 - `aspectjrt.jar`, `aspectjtools-1.9.22.1.jar`, `larva.jar`
 
 ---
@@ -30,6 +31,11 @@ These are available in `ProjectTemplate`.
    
    ```bash
    java -cp .:compiler.Compiler ./src/properties.lrv -o ./src -k keysize
+   ```
+
+If encrypted logs are required, include `-e` and the file containing the key. Note that if no key is specified then it will generate one.
+   ```bash
+   java -cp .:compiler.Compiler ./src/properties.lrv -o ./src -k keysize -e encryption_key
    ```
 
 2. Remove the key `/home/user/var/lib/SealFS/keys/k2` and store it safely for verification in the future.
@@ -70,3 +76,12 @@ These are available in `ProjectTemplate`.
    scripts/set_keys.sh
    ```
 3. Remove `/home/user/var/lib/SealFS/keys/k2` and store safely for future verification.
+
+---
+
+### Decrypting Logs
+Use the decryption algorithm provided [here](./src/decrypter)
+
+   ```bash
+   java Main <key> <file_to_decrypt>
+   ```
