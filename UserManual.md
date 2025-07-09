@@ -21,7 +21,7 @@ These are available in `ProjectTemplate`.
 - `scripts/` Ensure the bash files inside are executable by root.
 - `logs/` To be mounted to SealFS. Ensure no process is accessing it when it is mounted/unmounted.
 - `compiler/`
-- `encryption_key` To be used as the encryption key if this option was selected.
+- `encryption_key` To be used as the encryption key if this option was selected. More about it [here](./Encryption)
 - `aspectjrt.jar`, `aspectjtools-1.9.22.1.jar`, `larva.jar`
 
 ---
