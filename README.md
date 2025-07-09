@@ -19,6 +19,9 @@ The tool is intended for Linux environments and Java-based target applications.
 - **Supports Risk-Driven Logging Granularity**  
   Enables selective logging of relevant data based on risk assessments or regulatory requirements, minimizing overhead while maintaining forensic utility.
 
+- **Supports Encrypted Logs**  
+  Provides the option for the generated logs to be automatically encrypted with a key that is either passed or generated.
+  
 - **Suitable for Forensic Nodes**  
   Implements the core features required of a forensic node:
   - Completeness of logged data
