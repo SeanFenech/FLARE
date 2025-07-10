@@ -3,7 +3,7 @@ FLARE provides the option for the automatically generated logs to be encrypted u
 
 Adding the `-e` option at the end of the command to run the FLARE compiler will enable encryption using either a provided key or an automatically generated key.
 
-The decryption binary is available [here](./src/decrypter)
+The decryption binary is available [here](./src/decrypter).
 
 ## Encryption Scheme
 
