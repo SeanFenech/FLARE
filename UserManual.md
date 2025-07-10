@@ -2,8 +2,8 @@
 
 ### Stages of use
 1. Setting up the environment specified below
-2. Setting up /toolname
-3. Running the target application with /toolname
+2. Setting up FLARE
+3. Running the target application with FLARE
 4. Verifying the target application
 5. Renewing the key
 
@@ -26,7 +26,7 @@ These are available in `ProjectTemplate`.
 
 ---
 
-### Setting up /toolname
+### Setting up FLARE
 1. Run the compiler and pass the key size with `-k`. Note that the default key size is 100000 bytes.
    
    ```bash
@@ -48,7 +48,7 @@ If encrypted logs are required, include `-e` and the file containing the key. No
 
 ---
 
-### Running the target application with /toolname
+### Running the target application with FLARE
 - Run as root:
   ```bash
   sudo java -cp "aspectjrt.jar:out" Main
@@ -56,7 +56,7 @@ If encrypted logs are required, include `-e` and the file containing the key. No
 
 ---
 
-### Verifying the target application:
+### Verifying the target application
 1. Re-insert `/home/user/var/lib/SealFS/keys/k2`
 2. Run the verify script:
    ```bash
@@ -66,7 +66,7 @@ If encrypted logs are required, include `-e` and the file containing the key. No
 
 ---
 
-### Renewing the key:
+### Renewing the key
 1. Delete the directory:
    ```bash
    rm -r /home/user/var/lib/SealFS
