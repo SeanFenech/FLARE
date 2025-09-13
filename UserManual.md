@@ -33,9 +33,9 @@ These are available in `ProjectTemplate`.
    java -cp .:compiler.Compiler ./src/properties.lrv -o ./src -k keysize
    ```
 
-If encrypted logs are required, include `-e` and the file containing the key. Note that if no key is specified then it will generate one.
+   If encrypted logs are required, include `-e` and the file containing the key. Note that if no key is specified then it will generate one.
    ```bash
-   java -cp .:compiler.Compiler ./src/properties.lrv -o ./src -k keysize -e encryption_key
+   java -cp . compiler.Compiler ./src/properties.lrv -o ./src -k keysize -e encryption_key
    ```
 
 2. Remove the key `/home/user/var/lib/SealFS/keys/k2` and store it safely for verification in the future.
