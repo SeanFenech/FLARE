@@ -30,7 +30,7 @@ These are available in `ProjectTemplate`.
 1. Run the compiler and pass the key size with `-k`. Note that the default key size is 100000 bytes.
    
    ```bash
-   java -cp .:compiler.Compiler ./src/properties.lrv -o ./src -k keysize
+   java -cp . compiler.Compiler ./src/properties.lrv -o ./src -k keysize
    ```
 
    If encrypted logs are required, include `-e` and the file containing the key. Note that if no key is specified then it will generate one.
