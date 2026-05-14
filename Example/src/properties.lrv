@@ -20,11 +20,10 @@ GLOBAL {
 		int abruptChanges = 0;
 		double lSpeed = 0;
 		double lSpeedX = 0;
-	        double lSpeedY = 0;
-        	double lSpeedZ = 0;
+	    double lSpeedY = 0;
+        double lSpeedZ = 0;
 
-                String signalState = "good";
-
+        String signalState = "good";
 
 		double l_distance = 0; %%Last updated distance
 		double l_latitude = 0;
@@ -127,26 +126,26 @@ GLOBAL {
 		filter {gpsLevel < 3 || satellites < 9}
 
 		highAcceleration(double pitch, double roll) = {*.updateOrientation(*, pitch, roll, *, *, *)}
-		filter {Math.acos(Math.cos(pitch) * Math.cos(roll)) > 15}
-		%%filter {Math.atan(Math.sqrt( (Math.tan(pitch) * Math.tan(pitch)) + (Math.tan(roll) * Math.tan(roll)) )) > 15}
+		filter {Math.acos(Math.cos(pitch) * Math.cos(roll)) > Math.toRadians(15)}
+		%%filter {Math.atan(Math.sqrt( (Math.tan(pitch) * Math.tan(pitch)) + (Math.tan(roll) * Math.tan(roll)) )) > Math.toRadians(15)}
 		lowAcceleration(double pitch, double roll) = {*.updateOrientation(*, pitch, roll, *, *, *)}
-		filter {Math.acos(Math.cos(pitch) * Math.cos(roll)) <= 15}
-		%%filter {Math.atan(Math.sqrt( (Math.tan(pitch) * Math.tan(pitch)) + (Math.tan(roll) * Math.tan(roll)) )) <= 15}
+		filter {Math.acos(Math.cos(pitch) * Math.cos(roll)) <= Math.toRadians(15)}
+		%%filter {Math.atan(Math.sqrt( (Math.tan(pitch) * Math.tan(pitch)) + (Math.tan(roll) * Math.tan(roll)) )) <= Math.toRadians(15)}
 
 		highAccelerationFor5s() = {c1@5}
 
 		lookingAway(double droneHeading, double dronePitch, double droneRoll, double gimbalHeading, double gimbalPitch, double gimbalRoll) = {*.updateOrientation(droneHeading, dronePitch, droneRoll, gimbalHeading, gimbalPitch, gimbalRoll)}
-		filter {Math.abs(gimbalHeading - (Math.acos(Math.cos(dronePitch) * Math.cos(droneRoll)))) >= 5 || Math.abs(gimbalPitch) >= 5}
-		%%filter {(Math.abs(gimbalHeading - (droneHeading - Math.atan(Math.sin(droneRoll) / Math.tan(dronePitch)) ) ) >= 5 || Math.abs(gimbalPitch - dronePitch) >= 5 || Math.abs(gimbalRoll - droneRoll) >= 5)}
+		filter {Math.abs(gimbalHeading - (Math.acos(Math.cos(dronePitch) * Math.cos(droneRoll)))) >= Math.toRadians(5) || Math.abs(gimbalPitch) >= Math.toRadians(5)}
+		%%filter {(Math.abs(gimbalHeading - (droneHeading - Math.atan(Math.sin(droneRoll) / Math.tan(dronePitch)) ) ) >= Math.toRadians(5) || Math.abs(gimbalPitch - dronePitch) >= Math.toRadians(5) || Math.abs(gimbalRoll - droneRoll) >= Math.toRadians(5))}
 		looking(double droneHeading, double dronePitch, double droneRoll, double gimbalHeading, double gimbalPitch, double gimbalRoll) = {*.updateOrientation(droneHeading, dronePitch, droneRoll, gimbalHeading, gimbalPitch, gimbalRoll)}
-		filter {Math.abs(gimbalHeading - (Math.acos(Math.cos(dronePitch) * Math.cos(droneRoll)))) < 5 && Math.abs(gimbalPitch) < 5}
-		%%filter {(Math.abs(gimbalHeading - (droneHeading - Math.atan(Math.sin(droneRoll) / Math.tan(dronePitch)) ) ) < 5 && Math.abs(gimbalPitch - dronePitch) < 5 && Math.abs(gimbalRoll - droneRoll) < 5)}
+		filter {Math.abs(gimbalHeading - (Math.acos(Math.cos(dronePitch) * Math.cos(droneRoll)))) < Math.toRadians(5) && Math.abs(gimbalPitch) < Math.toRadians(5)}
+		%%filter {(Math.abs(gimbalHeading - (droneHeading - Math.atan(Math.sin(droneRoll) / Math.tan(dronePitch)) ) ) < Math.toRadians(5) && Math.abs(gimbalPitch - dronePitch) < Math.toRadians(5) && Math.abs(gimbalRoll - droneRoll) < Math.toRadians(5))}
 		%% Assuming order: Yaw Pitch Roll, and that gimbal information is relative to drone
 		%% Assuming roll is anticlockwise if facing forward from center
 		%% Assuming pitch is clockwise if facing right from center
 
 		speedChange(double xSpeed, double ySpeed, double zSpeed) = {*.updateSpeed(*, xSpeed, ySpeed, zSpeed)}
-                windTimerElapsed() = {c2@30}
+        windTimerElapsed() = {c2@30}
 
 		dataClock10() = {dc10@10}
 		dataClock1() = {dc@1}
