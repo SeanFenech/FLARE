@@ -1,0 +1,544 @@
+Global.java:15: error: cannot inherit from final Compiler
+public class Global extends Compiler{
+                            ^
+Global.java:23: error: cannot find symbol
+    Events events;
+    ^
+  symbol:   class Events
+  location: class Global
+Global.java:25: error: cannot find symbol
+    LinkedHashMap<Variable, ArrayList<Token>> local = new LinkedHashMap<Variable, ArrayList<Token>>();
+                  ^
+  symbol:   class Variable
+  location: class Global
+Global.java:25: error: cannot find symbol
+    LinkedHashMap<Variable, ArrayList<Token>> local = new LinkedHashMap<Variable, ArrayList<Token>>();
+                                      ^
+  symbol:   class Token
+  location: class Global
+Global.java:26: error: cannot find symbol
+    LinkedHashMap<String, Variable> localVariables = new LinkedHashMap<String, Variable>();
+                          ^
+  symbol:   class Variable
+  location: class Global
+Global.java:28: error: cannot find symbol
+    HashMap<String, Variable> contextVariables = new HashMap<String, Variable>();
+                    ^
+  symbol:   class Variable
+  location: class Global
+Global.java:29: error: cannot find symbol
+    ArrayList<Variable> variables = new ArrayList<Variable>();//these are the variables for the FOREACH
+              ^
+  symbol:   class Variable
+  location: class Global
+Global.java:32: error: cannot find symbol
+    ArrayList<Token> context = new ArrayList<Token>();
+              ^
+  symbol:   class Token
+  location: class Global
+Global.java:34: error: cannot find symbol
+    LinkedHashMap<String, Property> logics = new LinkedHashMap<String, Property>();
+                          ^
+  symbol:   class Property
+  location: class Global
+Global.java:36: error: cannot find symbol
+    ArrayList<Foreach> foreaches = new ArrayList<Foreach>();
+              ^
+  symbol:   class Foreach
+  location: class Global
+Global.java:38: error: cannot find symbol
+    public Invariants invariants;
+           ^
+  symbol:   class Invariants
+  location: class Global
+Global.java:45: error: cannot find symbol
+    public Global(ParsingString substring) throws ParseException{
+                  ^
+  symbol:   class ParsingString
+  location: class Global
+Global.java:89: error: cannot find symbol
+    public void parseLocalVariables(ParsingString string) throws ParseException
+                                    ^
+  symbol:   class ParsingString
+  location: class Global
+Global.java:133: error: cannot find symbol
+    public HashMap<String, Variable> allParentsVarsHash(HashMap<String, Variable> vars)
+                                                                        ^
+  symbol:   class Variable
+  location: class Global
+Global.java:133: error: cannot find symbol
+    public HashMap<String, Variable> allParentsVarsHash(HashMap<String, Variable> vars)
+                           ^
+  symbol:   class Variable
+  location: class Global
+Global.java:144: error: cannot find symbol
+    public ArrayList<Variable> allParentsVars(ArrayList<Variable> vars)
+                                                        ^
+  symbol:   class Variable
+  location: class Global
+Global.java:144: error: cannot find symbol
+    public ArrayList<Variable> allParentsVars(ArrayList<Variable> vars)
+                     ^
+  symbol:   class Variable
+  location: class Global
+Global.java:154: error: cannot find symbol
+    public HashMap<String, Trigger> allParentsEvents(HashMap<String, Trigger> events)
+                                                                     ^
+  symbol:   class Trigger
+  location: class Global
+Global.java:154: error: cannot find symbol
+    public HashMap<String, Trigger> allParentsEvents(HashMap<String, Trigger> events)
+                           ^
+  symbol:   class Trigger
+  location: class Global
+Global.java:172: error: cannot find symbol
+    public static boolean search(Collection<Variable> c, String string)
+                                            ^
+  symbol:   class Variable
+  location: class Global
+Global.java:210: error: cannot find symbol
+    public static String searchVariable(Token t, Global g)
+                                        ^
+  symbol:   class Token
+  location: class Global
+Global.java:235: error: cannot find symbol
+    public static boolean serachVariableInOneContext(Global current, Token t/*var name*/)
+                                                                     ^
+  symbol:   class Token
+  location: class Global
+Global.java:266: error: cannot find symbol
+    public static String handleVariableReplacement(ArrayList<Token> tokens, Global g)throws ParseException
+                                                             ^
+  symbol:   class Token
+  location: class Global
+Global.java:1667: error: cannot find symbol
+    public Global searchContext(ArrayList<Token> tokens) {
+                                          ^
+  symbol:   class Token
+  location: class Global
+Global.java:1688: error: cannot find symbol
+    public Global containsContext(Token token) {
+                                  ^
+  symbol:   class Token
+  location: class Global
+Global.java:15: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+public class Global extends Compiler{
+                            ^
+Global.java:25: error: cannot find symbol
+    LinkedHashMap<Variable, ArrayList<Token>> local = new LinkedHashMap<Variable, ArrayList<Token>>();
+                                                                        ^
+  symbol:   class Variable
+  location: class Global
+Global.java:25: error: cannot find symbol
+    LinkedHashMap<Variable, ArrayList<Token>> local = new LinkedHashMap<Variable, ArrayList<Token>>();
+                                                                                            ^
+  symbol:   class Token
+  location: class Global
+Global.java:26: error: cannot find symbol
+    LinkedHashMap<String, Variable> localVariables = new LinkedHashMap<String, Variable>();
+                                                                               ^
+  symbol:   class Variable
+  location: class Global
+Global.java:28: error: cannot find symbol
+    HashMap<String, Variable> contextVariables = new HashMap<String, Variable>();
+                                                                     ^
+  symbol:   class Variable
+  location: class Global
+Global.java:29: error: cannot find symbol
+    ArrayList<Variable> variables = new ArrayList<Variable>();//these are the variables for the FOREACH
+                                                  ^
+  symbol:   class Variable
+  location: class Global
+Global.java:32: error: cannot find symbol
+    ArrayList<Token> context = new ArrayList<Token>();
+                                             ^
+  symbol:   class Token
+  location: class Global
+Global.java:34: error: cannot find symbol
+    LinkedHashMap<String, Property> logics = new LinkedHashMap<String, Property>();
+                                                                       ^
+  symbol:   class Property
+  location: class Global
+Global.java:36: error: cannot find symbol
+    ArrayList<Foreach> foreaches = new ArrayList<Foreach>();
+                                                 ^
+  symbol:   class Foreach
+  location: class Global
+Global.java:69: error: cannot find symbol
+        invariants = new Invariants(parseWrapper("INVARIANTS",false), this);
+                         ^
+  symbol:   class Invariants
+  location: class Global
+Global.java:69: error: cannot find symbol
+        invariants = new Invariants(parseWrapper("INVARIANTS",false), this);
+                                    ^
+  symbol:   method parseWrapper(String,boolean)
+  location: class Global
+Global.java:71: error: cannot find symbol
+        parseLocalVariables(parseWrapper("VARIABLES",false));
+                            ^
+  symbol:   method parseWrapper(String,boolean)
+  location: class Global
+Global.java:73: error: cannot find symbol
+        events = new Events(parseWrapper("EVENTS",false), this);
+                     ^
+  symbol:   class Events
+  location: class Global
+Global.java:73: error: cannot find symbol
+        events = new Events(parseWrapper("EVENTS",false), this);
+                            ^
+  symbol:   method parseWrapper(String,boolean)
+  location: class Global
+Global.java:75: error: cannot find symbol
+        while (ps.hasMore("PROPERTY"))
+               ^
+  symbol:   variable ps
+  location: class Global
+Global.java:77: error: cannot find symbol
+            Property l = new Property(parseWrapper("PROPERTY",false));
+            ^
+  symbol:   class Property
+  location: class Global
+Global.java:77: error: cannot find symbol
+            Property l = new Property(parseWrapper("PROPERTY",false));
+                             ^
+  symbol:   class Property
+  location: class Global
+Global.java:77: error: cannot find symbol
+            Property l = new Property(parseWrapper("PROPERTY",false));
+                                      ^
+  symbol:   method parseWrapper(String,boolean)
+  location: class Global
+Global.java:78: error: cannot find symbol
+            l.parse(allParentsEvents(new HashMap<String, Trigger>()), this);
+                                                         ^
+  symbol:   class Trigger
+  location: class Global
+Global.java:81: error: cannot find symbol
+        while (ps.hasMore("FOREACH"))
+               ^
+  symbol:   variable ps
+  location: class Global
+Global.java:83: error: cannot find symbol
+            foreaches.add(new Foreach(this,parseWrapper("FOREACH")));
+                              ^
+  symbol:   class Foreach
+  location: class Global
+Global.java:83: error: cannot find symbol
+            foreaches.add(new Foreach(this,parseWrapper("FOREACH")));
+                                           ^
+  symbol:   method parseWrapper(String)
+  location: class Global
+Global.java:85: error: package ps does not exist
+        if (ps.string.toString().trim().length() > 0)
+              ^
+Global.java:91: error: cannot find symbol
+        Tokenizer tok = new Tokenizer(Tokenizer.EVENT_MODE);
+        ^
+  symbol:   class Tokenizer
+  location: class Global
+Global.java:91: error: cannot find symbol
+        Tokenizer tok = new Tokenizer(Tokenizer.EVENT_MODE);
+                            ^
+  symbol:   class Tokenizer
+  location: class Global
+Global.java:91: error: cannot find symbol
+        Tokenizer tok = new Tokenizer(Tokenizer.EVENT_MODE);
+                                      ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:92: error: cannot find symbol
+        ArrayList<Token> tokens = tok.scan(string.toString());
+                  ^
+  symbol:   class Token
+  location: class Global
+Global.java:96: error: cannot find symbol
+            Variable v = new Variable();
+            ^
+  symbol:   class Variable
+  location: class Global
+Global.java:96: error: cannot find symbol
+            Variable v = new Variable();
+                             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:97: error: cannot find symbol
+            v.type = new Token(tokens.get(cnt).text);
+                         ^
+  symbol:   class Token
+  location: class Global
+Global.java:120: error: cannot find symbol
+                throw new ParseException("> expected: " + Tokenizer.debugShow(tokens,0));
+                                                          ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:123: error: cannot find symbol
+            ArrayList<Token> init = Tokenizer.ending(tempcnt, ";", tokens);
+                      ^
+  symbol:   class Token
+  location: class Global
+Global.java:123: error: cannot find symbol
+            ArrayList<Token> init = Tokenizer.ending(tempcnt, ";", tokens);
+                                    ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:135: error: cannot find symbol
+        for (Variable v:variables)
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:174: error: cannot find symbol
+        for (Variable v: c)
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:238: error: cannot find symbol
+        for (Variable v:current.local.keySet())
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:243: error: cannot find symbol
+            for (Variable v:current.events.variables.values())
+                 ^
+  symbol:   class Variable
+  location: class Global
+Global.java:274: error: cannot find symbol
+            ArrayList<ArrayList<Token>> strings = new ArrayList<ArrayList<Token>>();
+                                ^
+  symbol:   class Token
+  location: class Global
+Global.java:274: error: cannot find symbol
+            ArrayList<ArrayList<Token>> strings = new ArrayList<ArrayList<Token>>();
+                                                                          ^
+  symbol:   class Token
+  location: class Global
+Global.java:277: error: cannot find symbol
+                ArrayList<Token> string = new ArrayList<Token>();
+                          ^
+  symbol:   class Token
+  location: class Global
+Global.java:277: error: cannot find symbol
+                ArrayList<Token> string = new ArrayList<Token>();
+                                                        ^
+  symbol:   class Token
+  location: class Global
+Global.java:299: error: cannot find symbol
+                    if (!string.contains(new Token(Tokenizer.get("::"),"::")) && tokens.get(cnt).is(","))
+                                             ^
+  symbol:   class Token
+  location: class Global
+Global.java:299: error: cannot find symbol
+                    if (!string.contains(new Token(Tokenizer.get("::"),"::")) && tokens.get(cnt).is(","))
+                                                   ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:311: error: cannot find symbol
+            for (ArrayList<Token> al:strings)
+                           ^
+  symbol:   class Token
+  location: class Global
+Global.java:314: error: cannot find symbol
+                if (al.size()>1 && al.contains(new Token(Tokenizer.get("::"),"::")))//:
+                                                   ^
+  symbol:   class Token
+  location: class Global
+Global.java:314: error: cannot find symbol
+                if (al.size()>1 && al.contains(new Token(Tokenizer.get("::"),"::")))//:
+                                                         ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:321: error: cannot find symbol
+                    ArrayList<Token> context;
+                              ^
+  symbol:   class Token
+  location: class Global
+Global.java:322: error: cannot find symbol
+                    while (cnt2 < al.lastIndexOf(new Token(Tokenizer.get("::"),"::")))
+                                                     ^
+  symbol:   class Token
+  location: class Global
+Global.java:322: error: cannot find symbol
+                    while (cnt2 < al.lastIndexOf(new Token(Tokenizer.get("::"),"::")))
+                                                           ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:324: error: cannot find symbol
+                        context = Tokenizer.ending(cnt2, "::", al);
+                                  ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:332: error: cannot find symbol
+                    Token t = al.get(cnt2);
+                    ^
+  symbol:   class Token
+  location: class Global
+Global.java:336: error: cannot find symbol
+                            throw new ParseException("Invalid Context for the Specified Variable " + Tokenizer.debugShow(al, cnt2));
+                                                                                                     ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:347: error: cannot find symbol
+                        al.set(cnt2, new Token(t.text));
+                                         ^
+  symbol:   class Token
+  location: class Global
+Global.java:355: error: cannot find symbol
+                        throw new ParseException("Identifier Expected: " + Tokenizer.debugShow(al, cnt2));
+                                                                           ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:362: error: cannot find symbol
+                            Token t = al.get(i);
+                            ^
+  symbol:   class Token
+  location: class Global
+Global.java:363: error: cannot find symbol
+                            al.set(i, new Token(searchVariable(t, g)));
+                                          ^
+  symbol:   class Token
+  location: class Global
+Global.java:373: error: cannot find symbol
+            for (ArrayList<Token> al:strings)
+                           ^
+  symbol:   class Token
+  location: class Global
+Global.java:374: error: cannot find symbol
+                sb.append(Tokenizer.showStats(al));
+                          ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:388: error: cannot find symbol
+        StringBuilder as1 = new StringBuilder("package aspects;\r\n"+imports
+                                                                     ^
+  symbol:   variable imports
+  location: class Global
+Global.java:402: error: cannot find symbol
+        StringBuilder cl = new StringBuilder("package larva;\r\n\r\n"+imports+"\r\nimport java.util.LinkedHashMap;\r\nimport java.io.PrintWriter;\r\nimport java.io.BufferedReader;\r\nimport java.io.FileWriter;\r\nimport java.io.InputStreamReader;\r\nimport java.util.concurrent.LinkedBlockingQueue;\r\nimport java.util.concurrent.atomic.AtomicBoolean;");
+                                                                      ^
+  symbol:   variable imports
+  location: class Global
+Global.java:412: error: cannot find symbol
+        for (Variable v:localVariables.values())
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:443: error: cannot find symbol
+                        Encryption.createKey(encKeyFilePath);
+                        ^
+  symbol:   variable Encryption
+  location: class Global
+Global.java:518: error: cannot find symbol
+        for (Variable v: events.variables.values())
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:526: error: cannot find symbol
+        for (Variable v: variables)
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:533: error: cannot find symbol
+        for (Variable v:local.keySet())
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:536: error: cannot find symbol
+                cl.append("\r\n public " + Tokenizer.showStats(local.get(v))+";");
+                                           ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:544: error: cannot find symbol
+        for (Invariant inv: invariants.invariants.values())
+             ^
+  symbol:   class Invariant
+  location: class Global
+Global.java:553: error: cannot find symbol
+                cl.append("\r\npublic " + inv.returnType + " " + inv.name + "_temp = "+ Tokenizer.showStats(inv.call) +";" );
+                                                                                        ^
+  symbol:   variable Tokenizer
+  location: class Global
+Global.java:566: error: cannot find symbol
+        for (Variable v: allParentsVars(new ArrayList<Variable>()))
+                                                      ^
+  symbol:   class Variable
+  location: class Global
+Global.java:566: error: cannot find symbol
+        for (Variable v: allParentsVars(new ArrayList<Variable>()))
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:573: error: cannot find symbol
+            for (Variable v: parent.allParentsVars(new ArrayList<Variable>()))
+                                                                 ^
+  symbol:   class Variable
+  location: class Global
+Global.java:573: error: cannot find symbol
+            for (Variable v: parent.allParentsVars(new ArrayList<Variable>()))
+                 ^
+  symbol:   class Variable
+  location: class Global
+Global.java:578: error: cannot find symbol
+        for (Variable v:localVariables.values())
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:588: error: cannot find symbol
+        for (Variable v: variables)
+             ^
+  symbol:   class Variable
+  location: class Global
+Global.java:599: error: cannot find symbol
+        for (Property p : logics.values())
+             ^
+  symbol:   class Property
+  location: class Global
+Global.java:601: error: cannot find symbol
+            ArrayList<Token> code = p.states.starting.get(0).code;
+                      ^
+  symbol:   class Token
+  location: class Global
+Global.java:809: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/aspects/_asp_"+name+id+".aj");
+                                              ^
+Global.java:812: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw3 = new PrintWriter(Compiler.outputDir+"/larva/_cls_"+name+id+".java");
+                                              ^
+Global.java:995: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/Clock.java");
+                                              ^
+Global.java:1007: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw4 = new PrintWriter(Compiler.outputDir+"/larva/SC.java");
+                                              ^
+Global.java:1081: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+ "/larva/Channel.java");
+                                              ^
+Global.java:1124: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/Channel.java");
+                                              ^
+Global.java:1160: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/ClockEvent.java");
+                                              ^
+Global.java:1179: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/_callable.java");
+                                              ^
+Global.java:1218: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/ChannelEvent.java");
+                                              ^
+Global.java:1309: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/RunningClock.java");
+                                              ^
+Global.java:1469: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/LogWriter.java");
+                                              ^
+Global.java:1577: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/IterableList.java");
+                                              ^
+Global.java:1598: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+            PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/_larva.java");
+                                              ^
+Global.java:1628: warning: [removal] Compiler in java.lang has been deprecated and marked for removal
+                PrintWriter pw1 = new PrintWriter(Compiler.outputDir+"/larva/_BadStateException"+name+".java");
+                                                  ^
+100 errors
+15 warnings
+only showing the first 100 errors, of 139 total; use -Xmaxerrs if you would like to see more
